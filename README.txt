@@ -113,3 +113,5 @@ The application can be compiled into a standalone Windows executable using PyIns
 **Build Command**:  
 ```bash
 pyinstaller --onefile --windowed --name MARCOM --icon=icon.ico gui_app.py
+
+## MADE BY SAID LAACHIR AND SALMANE TOUBI THE 29TH DECEMBER OF 2025
