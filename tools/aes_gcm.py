@@ -18,7 +18,7 @@ if __name__ == "__main__":
     msg = "Message secret pour test unitaire AES."
     nonce, ct, tag = encrypt_aes(msg, key)
     
-    print(f"--- 🔒 Test Unitaire AES-GCM ---")
+    print(f"--- Test Unitaire AES-GCM ---")
     print("Ciphertext:", ct)
     
     try:

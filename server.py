@@ -47,30 +47,30 @@ def start_server(log):
     conn, addr = server.accept()
     log(C("orange", f"[SERVER] Connected to {addr}"))
 
-    # ===== STEP 1: ElGamal =====
+    #* ===== STEP 1: ElGamal =====
     log(C("blue", "[SERVER][1] Generating ElGamal key pair"))
     keys = keygen_fast(2048)
     srv_elgamal_priv = keys["pvt"]
     srv_elgamal_pub = keys["pub"]
     log(C("blue", f"[ELGAMAL] Public key = {srv_elgamal_pub}"))
 
-    # ===== STEP 2: DSS =====
+    #* ===== STEP 2: DSS =====
     log(C("yellow", "[SERVER][2] Generating DSS signing keys"))
     srv_dss_priv, srv_dss_pub = generate_dss_keys(2048)
 
-    # ===== STEP 3: Send public keys =====
+    #* ===== STEP 3: Send public keys =====
     log(C("orange", "[SERVER][3] Sending ElGamal + DSS public keys"))
     conn.send(json.dumps({
         "elgamal_pub": srv_elgamal_pub,
         "dss_pub_pem": srv_dss_pub.export_key(format="PEM").decode()
     }).encode())
 
-    # ===== STEP 4: Receive client DSS =====
+    #* ===== STEP 4: Receive client DSS =====
     log(C("orange", "[SERVER][4] Receiving client DSS public key"))
     client_data = json.loads(conn.recv(BUFFER_SIZE).decode())
     client_dss_pub_key = DSA.import_key(client_data["dss_pub_pem"])
 
-    # ===== STEP 5: Receive AES =====
+    #* ===== STEP 5: Receive AES =====
     log(C("blue", "[SERVER][5] Receiving encrypted AES key (ElGamal)"))
     encrypted_aes = json.loads(conn.recv(BUFFER_SIZE).decode())
     log(C("blue", f"[ELGAMAL] c1 = {encrypted_aes['c1']}"))
